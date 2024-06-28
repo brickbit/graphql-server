@@ -23,6 +23,7 @@ const schema = buildSchema(`
 
   type Query {
     cities: [City]
+    city(id: Int): City
     places: [Place]
   }
 `);
