@@ -6,7 +6,9 @@ const db = require('../db');
 const schema = buildSchema(`
   type Query {
     cities: [City]
+    city(id: Int): City
     places: [Place]
+    place(key: String): [Place]
   }
 
   type City {
@@ -33,6 +35,18 @@ const schema = buildSchema(`
 const root = {
   cities: () => db.cities,
   places: () => db.places,
+  city: (args) => {
+    if (args.id !== undefined) {
+      return db.cities.find(city => city.id == args.id);
+    }
+    return null;
+  },
+  place: (args) => {
+    if (args.key !== undefined) {
+      return db.places.filter(place => place.key == args.key);
+    }
+    return null;
+  },
 };
 
 const app = express();
